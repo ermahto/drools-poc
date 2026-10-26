@@ -2,6 +2,9 @@ server:
   port: 8080
 
 spring:
+  http:
+    converters:
+      preferred-json-mapper: jackson2
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     consumer:
