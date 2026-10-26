@@ -1,0 +1,67 @@
+package rules
+
+import com.drools.cli.OrderMessage
+
+rule "Mandatory field validation"
+dialect "java"
+when
+    $order : OrderMessage()
+then
+    if ($order.getOrderId() == null || $order.getOrderId().trim().isEmpty()) {
+        $order.reject("orderId is mandatory");
+    }
+    if ($order.getCustomerName() == null || $order.getCustomerName().trim().isEmpty()) {
+        $order.reject("customerName is mandatory");
+    }
+    if ($order.getCountry() == null || $order.getCountry().trim().isEmpty()) {
+        $order.reject("country is mandatory");
+    }
+    if ($order.getOrderType() == null || $order.getOrderType().trim().isEmpty()) {
+        $order.reject("orderType is mandatory");
+    }
+    if ($order.getAmount() == null) {
+        $order.reject("amount is mandatory");
+    }
+end
+
+rule "Country-based validation"
+dialect "java"
+when
+    $order : OrderMessage(country != null && country.trim().length() > 0)
+then
+    String country = $order.getCountry().trim().toUpperCase();
+    if (!"US".equals(country) && !"IN".equals(country) && !"GB".equals(country)
+            && !"DE".equals(country) && !"SG".equals(country)) {
+        $order.reject("country '" + $order.getCountry() + "' is not supported. Allowed values: US, IN, GB, DE, SG");
+    }
+end
+
+rule "Order amount and type validation"
+dialect "java"
+when
+    $order : OrderMessage()
+then
+    String orderType = $order.getOrderType();
+    Double amount = $order.getAmount();
+
+    if (orderType != null && !orderType.trim().isEmpty()) {
+        String type = orderType.trim().toUpperCase();
+        if (!"STANDARD".equals(type) && !"EXPRESS".equals(type) && !"BULK".equals(type)) {
+            $order.reject("orderType '" + orderType + "' is not supported. Allowed values: STANDARD, EXPRESS, BULK");
+        } else if (amount != null && amount > 0) {
+            if ("STANDARD".equals(type) && amount > 10000) {
+                $order.reject("STANDARD orders cannot exceed amount 10000");
+            }
+            if ("EXPRESS".equals(type) && amount > 50000) {
+                $order.reject("EXPRESS orders cannot exceed amount 50000");
+            }
+            if ("BULK".equals(type) && amount > 100000) {
+                $order.reject("BULK orders cannot exceed amount 100000");
+            }
+        }
+    }
+
+    if (amount != null && amount <= 0) {
+        $order.reject("amount must be greater than 0");
+    }
+end
