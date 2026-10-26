@@ -134,10 +134,11 @@
 			<artifactId>spring-boot-jackson2</artifactId>
 		</dependency>
 
-		<!-- Kafka in/out: order-inbound -> validated / rejected -->
+		<!-- Kafka in/out: order-inbound -> validated / rejected.
+		     Boot 4 needs this starter (not spring-kafka alone) to create KafkaTemplate. -->
 		<dependency>
-			<groupId>org.springframework.kafka</groupId>
-			<artifactId>spring-kafka</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-kafka</artifactId>
 		</dependency>
 
 		<!-- Drools rule engine -->
