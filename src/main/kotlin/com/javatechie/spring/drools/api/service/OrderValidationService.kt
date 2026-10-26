@@ -33,7 +33,7 @@ class OrderValidationService(private val kieContainer: KieContainer) {
 	private fun normalize(order: OrderMessage) {
 		order.orderId = order.orderId?.trim()
 		order.customerName = order.customerName?.trim()
-		order.country = order.country?.trim()?.toUpperCase(Locale.ROOT)
-		order.orderType = order.orderType?.trim()?.toUpperCase(Locale.ROOT)
+		order.country = order.country?.trim()?.uppercase(Locale.ROOT)
+		order.orderType = order.orderType?.trim()?.uppercase(Locale.ROOT)
 	}
 }

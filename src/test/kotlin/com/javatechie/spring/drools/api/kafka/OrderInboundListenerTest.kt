@@ -5,7 +5,7 @@ import com.javatechie.spring.drools.api.config.DroolsContainerFactory
 import com.javatechie.spring.drools.api.model.OrderMessage
 import com.javatechie.spring.drools.api.service.OrderValidationService
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.springframework.kafka.core.KafkaTemplate
 

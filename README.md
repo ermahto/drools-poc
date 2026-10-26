@@ -4,10 +4,12 @@ Kotlin / Spring Boot service that consumes an order message from Kafka, validate
 
 ## Prerequisites
 
-- JDK 8
-- Maven 3.6+
+- JDK 21 (set this as the IntelliJ Project SDK)
+- Maven 3.6.3+
 - Docker Desktop (for the local Kafka POC)
 - Optionally, an internal Kafka cluster instead of Docker
+
+In IntelliJ: **File → Project Structure → Project SDK = 21**, then **Maven tool window → Reload**. Do not use JDK 8; this project targets Java 21.
 
 ## How to run Kafka
 

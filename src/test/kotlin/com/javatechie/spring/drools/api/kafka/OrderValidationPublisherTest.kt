@@ -2,7 +2,7 @@ package com.javatechie.spring.drools.api.kafka
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.javatechie.spring.drools.api.model.OrderMessage
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify

@@ -3,14 +3,14 @@ package com.javatechie.spring.drools.api.service
 import com.javatechie.spring.drools.api.config.DroolsContainerFactory
 import com.javatechie.spring.drools.api.model.OrderMessage
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 class OrderValidationServiceTest {
 
 	private lateinit var service: OrderValidationService
 
-	@Before
+	@BeforeEach
 	fun setUp() {
 		service = OrderValidationService(DroolsContainerFactory.create())
 	}

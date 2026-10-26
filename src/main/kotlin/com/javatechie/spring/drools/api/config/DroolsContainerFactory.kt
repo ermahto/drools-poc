@@ -1,5 +1,6 @@
 package com.javatechie.spring.drools.api.config
 
+import org.drools.model.codegen.ExecutableModelProject
 import org.kie.api.KieServices
 import org.kie.api.builder.KieModule
 import org.kie.api.builder.Message
@@ -20,7 +21,7 @@ object DroolsContainerFactory {
 		kieFileSystem.write(ResourceFactory.newClassPathResource(ruleFile))
 
 		val kieBuilder = kieServices.newKieBuilder(kieFileSystem)
-		kieBuilder.buildAll()
+		kieBuilder.buildAll(ExecutableModelProject::class.java)
 
 		val errors = kieBuilder.results.getMessages(Message.Level.ERROR)
 		if (errors.isNotEmpty()) {
