@@ -1,0 +1,7 @@
+{
+  "orderId": "ORD-1001",
+  "customerName": "Alex Kumar",
+  "country": "US",
+  "orderType": "STANDARD",
+  "amount": 5000
+}
