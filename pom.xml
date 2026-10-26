@@ -24,24 +24,47 @@
 		<drools-version>10.2.0</drools-version>
 
 		<!--
-			CVE overrides (not used directly by our code).
-			Spring Boot 4.1.2 still pulls older transitives that Mend flags.
-			These properties only change the version that gets used on the classpath.
+			CVE overrides. Boot 4.1.2 still manages slightly older transitives.
+			These are not libraries we call in application code.
 		-->
 		<logback.version>1.6.6</logback.version>
 		<log4j2.version>2.25.5</log4j2.version>
+		<jackson2-bom.version>2.21.8</jackson2-bom.version>
+		<jackson-bom.version>3.1.8</jackson-bom.version>
 		<lz4-java.version>1.12.1</lz4-java.version>
-		<zstd-jni.version>1.5.7-6</zstd-jni.version>
-		<snappy-java.version>1.1.10.8</snappy-java.version>
+		<zstd-jni.version>1.5.7-24</zstd-jni.version>
+		<snappy-java.version>1.1.10.10</snappy-java.version>
+		<asm.version>9.11.1</asm.version>
 	</properties>
 
 	<!--
-		Version pins for Kafka compression libraries.
-		Path: spring-kafka -> kafka-clients -> lz4 / zstd-jni / snappy-java
-		Our app does not call these APIs; they are Kafka codec dependencies.
+		Pins for transitive libraries flagged by Mend.
+		Kafka compression: spring-kafka -> kafka-clients -> lz4 / zstd-jni / snappy-java
+		Jackson: Boot 4 ships both Jackson 2 (our ObjectMapper) and Jackson 3 (webmvc default)
+		ASM: used by Drools / Byte Buddy / Mockito bytecode work
 	-->
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson2-bom.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson2-bom.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>tools.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson-bom.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>tools.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson-bom.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>at.yawk.lz4</groupId>
 				<artifactId>lz4-java</artifactId>
@@ -56,6 +79,31 @@
 				<groupId>org.xerial.snappy</groupId>
 				<artifactId>snappy-java</artifactId>
 				<version>${snappy-java.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.asm</groupId>
+				<artifactId>asm</artifactId>
+				<version>${asm.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.asm</groupId>
+				<artifactId>asm-commons</artifactId>
+				<version>${asm.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.asm</groupId>
+				<artifactId>asm-tree</artifactId>
+				<version>${asm.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.asm</groupId>
+				<artifactId>asm-analysis</artifactId>
+				<version>${asm.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.asm</groupId>
+				<artifactId>asm-util</artifactId>
+				<version>${asm.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -105,10 +153,18 @@
 			<artifactId>spring-boot-starter-webmvc-test</artifactId>
 			<scope>test</scope>
 			<exclusions>
-				<!-- Unused test JSON helper flagged by Mend. -->
+				<!-- Unused test JSON helpers flagged by Mend. -->
 				<exclusion>
 					<groupId>com.vaadin.external.google</groupId>
 					<artifactId>android-json</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.jayway.jsonpath</groupId>
+					<artifactId>json-path</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>net.minidev</groupId>
+					<artifactId>json-smart</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
